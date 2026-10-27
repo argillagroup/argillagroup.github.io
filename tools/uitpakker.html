@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website-uitpakker</title>
+<style>
+  :root {
+    --bg: #f4ede4; --card: #fffaf3; --text: #2b2420; --muted: #7a6c62;
+    --accent: #a4532f; --accent-dark: #7e3d21; --line: #e2d6c7;
+    --ok: #2f6b3a; --warn-bg: #fff3d6; --warn-line: #e3c27a; --err-bg: #fde3dc; --err-line: #e39a85;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+  h1 { font-family: Charter, "Bitstream Charter", Cambria, Georgia, serif; font-weight: 400; font-size: 32px; margin: 0 0 6px; }
+  .lead { color: var(--muted); margin: 0 0 32px; }
+  .step { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; margin-bottom: 18px; }
+  .step h2 { margin: 0 0 6px; font-size: 17px; font-weight: 600; }
+  .step h2 span { display: inline-block; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 14px; line-height: 26px; text-align: center; margin-right: 10px; }
+  .step p { margin: 0 0 12px; color: var(--muted); font-size: 15px; }
+  .drop { display: block; margin: 20px 0 8px; border: 2px dashed var(--line); border-radius: 8px; padding: 36px 24px; text-align: center; cursor: pointer; transition: background .15s, border-color .15s; }
+  .drop.over { background: #fff; border-color: var(--accent); }
+  .drop strong { color: var(--accent); }
+  .drop input { display: none; }
+  .chosen { margin: 4px 0 0; min-height: 1.6em; font-size: 14px; color: var(--ok); }
+  button.primary { background: var(--accent); color: #fff; border: 0; border-radius: 999px; padding: 12px 26px; font-size: 16px; cursor: pointer; }
+  button.primary:hover { background: var(--accent-dark); }
+  button.primary:disabled { background: #c9b8a9; cursor: not-allowed; }
+  .msg { border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 15px; }
+  .msg.warn { background: var(--warn-bg); border: 1px solid var(--warn-line); }
+  .msg.err { background: var(--err-bg); border: 1px solid var(--err-line); }
+  .msg.ok { background: #e6f1e7; border: 1px solid #b9d6bd; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  th { font-weight: 600; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+  td.folder { color: var(--muted); white-space: nowrap; }
+  td input { width: 100%; font: inherit; padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+  td.size { text-align: right; white-space: nowrap; color: var(--muted); }
+  .thumb { width: 44px; height: 34px; object-fit: cover; border: 1px solid var(--line); border-radius: 4px; background: #fff; display: block; }
+  details { margin-top: 28px; color: var(--muted); font-size: 14px; }
+  summary { cursor: pointer; color: var(--text); }
+  code { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; font-size: 13px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Website-uitpakker</h1>
+  <p class="lead">Zet een gebundelde <code>index.html</code> om in een nette map met <code>index.html</code> en <code>assets/</code>. Alles gebeurt in je browser; er wordt niets naar een server gestuurd.</p>
+
+  <section class="step">
+    <h2><span>1</span>Kies de gebundelde index.html</h2>
+    <p>Het grote bestand (enkele megabytes) dat je van de website-generator kreeg.</p>
+    <label class="drop" id="dropHtml">
+      <input type="file" id="fileHtml" accept=".html,.htm,text/html">
+      Sleep het bestand hierheen of <strong>klik om te kiezen</strong>
+    </label>
+    <div class="chosen" id="chosenHtml"></div>
+  </section>
+
+  <section class="step">
+    <h2><span>2</span>Controleer en download</h2>
+    <p>Je krijgt een zip-bestand. Pak het uit en zet de inhoud (index.html en de map assets) op de hosting, in plaats van de vorige bestanden. De privacyverklaring hoeft niet mee: die staat al als <code>assets/privacyverklaring.pdf</code> op de hosting, en de link in de website wordt daar automatisch naartoe gezet.</p>
+    <div id="messages"></div>
+    <div id="tableWrap" class="hidden">
+      <table>
+        <thead><tr><th></th><th>Map</th><th>Bestandsnaam</th><th>Grootte</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p style="margin-top:16px"><button class="primary" id="btnDownload" disabled>Download zip</button></p>
+  </section>
+
+  <details>
+    <summary>Hoe werkt dit?</summary>
+    <p>De gebundelde index.html bevat alle afbeeldingen, lettertypes en scripts in gecodeerde vorm. Deze pagina haalt ze eruit, geeft ze een leesbare naam (afgeleid van de alt-tekst van afbeeldingen, de lettertype-declaratie, of de naam van het script), vervangt de interne verwijzingen in de html door relatieve paden, en zet React en de runtime op lokale bestanden zodat de site geen externe servers nodig heeft. De link naar de privacyverklaring wordt op <code>assets/privacyverklaring.pdf</code> gezet en de tijdelijke tekst "pdf nog op te laden" wordt verwijderd.</p>
+    <p>Let op: de uitgepakte site werkt alleen via een webserver (zoals de hosting of GitHub Pages), niet door index.html dubbel te klikken.</p>
+  </details>
+</main>
+
+<script id="core">
+// ─────────────────────────────────────────────────────────────────────
+// Kernlogica. Gebruikt alleen standaard web-API's (werkt ook in Node 18+
+// voor tests): atob, TextDecoder/TextEncoder, DecompressionStream.
+// unpackBundle(htmlText) -> { files: [{path, bytes}], warnings: [] }
+// ─────────────────────────────────────────────────────────────────────
+const UUID_RE = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g;
+const EXT_BY_MIME = {
+  'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp', 'image/gif': '.gif',
+  'image/svg+xml': '.svg', 'image/avif': '.avif', 'font/woff2': '.woff2', 'font/woff': '.woff',
+  'font/ttf': '.ttf', 'font/otf': '.otf', 'application/font-woff': '.woff',
+  'text/javascript': '.js', 'application/javascript': '.js', 'application/x-javascript': '.js',
+  'text/css': '.css', 'application/pdf': '.pdf', 'application/json': '.json', 'text/html': '.html',
+};
+const PRIVACY_PATH = 'assets/privacyverklaring.pdf';
+
+function slug(s) {
+  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+// "Productie bij de steenfabrieken van de groep" -> productie-steenfabrieken
+// "Gesprek aan tafel tussen drie mensen ..."      -> gesprek-aan-tafel
+// "Portret van Geert Lambrechts"                  -> portret-geert-lambrechts
+function nameFromAlt(alt) {
+  const PREP = /^(van|bij|in|tussen|met|op|door|voor|aan|naast|achter|onder|boven|over|uit)$/i;
+  const STOP = /^(de|het|een|van|bij|in|tussen|met|op|door|voor|en|of)$/i;
+  let words = alt.trim().split(/\s+/);
+  let preps = 0;
+  const kept = [];
+  for (const w of words) {
+    if (PREP.test(w)) { preps++; if (preps >= 2) break; }
+    kept.push(w);
+    if (kept.length >= 6) break;
+  }
+  const out = kept.filter(w => !STOP.test(w));
+  return slug(out.join(' ')) || 'afbeelding';
+}
+
+function b64ToBytes(b64) {
+  const bin = atob(b64);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+async function gunzip(bytes) {
+  if (typeof DecompressionStream === 'undefined') throw new Error('Deze browser kan geen gzip uitpakken. Gebruik een recente versie van Chrome, Edge, Firefox of Safari.');
+  const ds = new DecompressionStream('gzip');
+  const writer = ds.writable.getWriter();
+  writer.write(bytes); writer.close();
+  const reader = ds.readable.getReader();
+  const chunks = []; let total = 0;
+  for (;;) { const { done, value } = await reader.read(); if (done) break; chunks.push(value); total += value.length; }
+  const out = new Uint8Array(total); let off = 0;
+  for (const c of chunks) { out.set(c, off); off += c.length; }
+  return out;
+}
+
+function readBlock(html, type) {
+  // '</' + 'script>' in twee stukken, anders sluit de browser hier het script-element af
+  const re = new RegExp('<script type="__bundler/' + type + '">\\s*([\\s\\S]*?)\\s*</' + 'script>');
+  const m = re.exec(html);
+  return m ? m[1] : null;
+}
+
+function getAttr(tag, name) {
+  const m = new RegExp('\\s' + name + '\\s*=\\s*"([^"]*)"', 'i').exec(tag) || new RegExp("\\s" + name + "\\s*=\\s*'([^']*)'", 'i').exec(tag);
+  return m ? m[1] : null;
+}
+
+function uniquePath(path, used) {
+  if (!used.has(path)) { used.add(path); return path; }
+  const m = /^(.*?)(\.[^./]+)?$/.exec(path);
+  for (let i = 2; ; i++) {
+    const p = m[1] + '-' + i + (m[2] || '');
+    if (!used.has(p)) { used.add(p); return p; }
+  }
+}
+
+async function unpackBundle(html) {
+  const warnings = [];
+  const manifestTxt = readBlock(html, 'manifest');
+  const templateTxt = readBlock(html, 'template');
+  if (!manifestTxt || !templateTxt) {
+    throw new Error('Dit bestand is geen gebundelde index.html: de ingebouwde bestandslijst ontbreekt. Kies het grote bestand dat je van de website-generator kreeg.');
+  }
+  const manifest = JSON.parse(manifestTxt);
+  let template = JSON.parse(templateTxt);
+  const extTxt = readBlock(html, 'ext_resources');
+  const ext = extTxt ? JSON.parse(extTxt) : [];
+  const pageOrderTxt = readBlock(html, 'page_order');
+  const pageOrder = pageOrderTxt ? JSON.parse(pageOrderTxt) : [];
+  if (pageOrder.length) warnings.push('Deze bundle bevat geneste pagina\'s (iframes). Die worden niet ondersteund; de hoofdpagina wordt wel uitgepakt.');
+  const extByUuid = {};
+  for (const e of ext) extByUuid[e.uuid] = e.id;
+
+  // 1. decode all entries
+  const entries = {};
+  for (const [uuid, e] of Object.entries(manifest)) {
+    let bytes = b64ToBytes(e.data);
+    if (e.compressed) bytes = await gunzip(bytes);
+    entries[uuid] = { uuid, mime: (e.mime || '').toLowerCase(), bytes, ext: EXT_BY_MIME[(e.mime || '').toLowerCase()] || '', path: null, kind: 'overig' };
+  }
+
+  // 2. names for images from alt text
+  for (const m of template.matchAll(/<img\b[^>]*>/gi)) {
+    const tag = m[0];
+    const src = getAttr(tag, 'src');
+    if (!src || !entries[src] || entries[src].path) continue;
+    const alt = getAttr(tag, 'alt') || '';
+    let base = alt ? nameFromAlt(alt.replace(/^Portret van\s+/i, 'portret ')) : 'afbeelding-' + src.slice(0, 8);
+    entries[src].path = 'assets/images/' + base + entries[src].ext;
+    entries[src].kind = 'afbeelding';
+  }
+
+  // 3. fonts from @font-face blocks (subset from the preceding /* latin */ comment)
+  const fontUses = {}; // uuid -> {family, style, subset, weights:Set}
+  for (const m of template.matchAll(/(?:\/\*\s*([a-z-]+)\s*\*\/\s*)?@font-face\s*\{([^}]*)\}/gi)) {
+    const subset = m[1] || '';
+    const body = m[2];
+    const fam = (/font-family\s*:\s*['"]?([^;'"]+)/i.exec(body) || [])[1];
+    const style = ((/font-style\s*:\s*([^;]+)/i.exec(body) || [])[1] || 'normal').trim();
+    const weight = ((/font-weight\s*:\s*([^;]+)/i.exec(body) || [])[1] || '400').trim();
+    for (const u of body.match(UUID_RE) || []) {
+      if (!entries[u]) continue;
+      const fu = fontUses[u] || (fontUses[u] = { family: fam || 'font', style, subset, weights: new Set() });
+      fu.weights.add(weight);
+    }
+  }
+  // weight goes in the name only when one family+subset+style has several files
+  const groupCount = {};
+  for (const fu of Object.values(fontUses)) { const k = [fu.family, fu.subset, fu.style].join('|'); groupCount[k] = (groupCount[k] || 0) + 1; }
+  for (const [u, fu] of Object.entries(fontUses)) {
+    if (entries[u].path) continue;
+    const parts = [slug(fu.family)];
+    if (groupCount[[fu.family, fu.subset, fu.style].join('|')] > 1) parts.push([...fu.weights].sort().join('-'));
+    if (fu.style.toLowerCase() !== 'normal') parts.push(slug(fu.style));
+    if (fu.subset) parts.push(slug(fu.subset));
+    entries[u].path = 'assets/fonts/' + parts.join('-') + (entries[u].ext || '.woff2');
+    entries[u].kind = 'lettertype';
+  }
+
+  // 4. everything else by type
+  const td = new TextDecoder();
+  for (const e of Object.values(entries)) {
+    if (e.path) continue;
+    if (extByUuid[e.uuid]) {
+      e.path = 'assets/js/' + (extByUuid[e.uuid].split('/').pop().split('?')[0] || ('script-' + e.uuid.slice(0, 8) + '.js'));
+      e.kind = 'script';
+    } else if (e.ext === '.js') {
+      const head = td.decode(e.bytes.subarray(0, 300));
+      let n;
+      if (/dc-runtime/i.test(head)) n = 'dc-runtime';
+      else if (/@ds-bundle/.test(head)) { const ns = /"namespace":"([^"]+)"/.exec(head); n = (ns ? slug(ns[1].split('_')[0]) + '-' : '') + 'ds-bundle'; }
+      else n = 'script-' + e.uuid.slice(0, 8);
+      e.path = 'assets/js/' + n + '.js'; e.kind = 'script';
+    } else if (e.ext === '.css') {
+      e.path = 'assets/css/style-' + e.uuid.slice(0, 8) + '.css'; e.kind = 'stijl';
+    } else if (e.ext === '.pdf') {
+      // a pdf linked from a privacy link gets the fixed name
+      const linked = new RegExp('href="' + e.uuid + '"[^>]*>[^<]*privacy', 'i').test(template) ||
+                     new RegExp('privacy[^"]*"\\s+href="' + e.uuid + '"', 'i').test(template);
+      e.path = linked ? PRIVACY_PATH : 'assets/document-' + e.uuid.slice(0, 8) + '.pdf'; e.kind = 'document';
+    } else if (e.mime.startsWith('image/')) {
+      e.path = 'assets/images/afbeelding-' + e.uuid.slice(0, 8) + e.ext; e.kind = 'afbeelding';
+    } else if (e.mime.startsWith('font/') || /font/.test(e.mime)) {
+      e.path = 'assets/fonts/font-' + e.uuid.slice(0, 8) + (e.ext || '.woff2'); e.kind = 'lettertype';
+    } else {
+      e.path = 'assets/overig/' + e.uuid.slice(0, 8) + e.ext; e.kind = 'overig';
+    }
+  }
+
+  // 5. make paths unique
+  const used = new Set();
+  for (const e of Object.values(entries)) e.path = uniquePath(e.path, used);
+
+  const files = Object.values(entries).map(e => ({ path: e.path, bytes: e.bytes, kind: e.kind, mime: e.mime, uuid: e.uuid }));
+  return { template, files, entries, extByUuid, warnings };
+}
+
+// Builds the final index.html from the (possibly renamed) file list.
+function buildHtml(result) {
+  const { entries, extByUuid } = result;
+  const pathByUuid = {};
+  for (const f of result.files) if (f.uuid) pathByUuid[f.uuid] = f.path;
+  let html = result.template;
+  for (const [uuid] of Object.entries(entries)) html = html.split(uuid).join(pathByUuid[uuid]);
+  html = html.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
+
+  // CDN-afhankelijkheden (React) naar de lokale kopieën laten wijzen
+  const resourceMap = {};
+  for (const [uuid, url] of Object.entries(extByUuid)) if (pathByUuid[uuid]) resourceMap[url] = pathByUuid[uuid];
+  if (Object.keys(resourceMap).length) {
+    const script = '<script>window.__resources = ' + JSON.stringify(resourceMap, null, 2).replace(/<\//g, '<\\/') + ';</' + 'script>\n';
+    const vp = /<meta[^>]*name="viewport"[^>]*>\n?/i.exec(html);
+    const head = /<head[^>]*>\n?/i.exec(html);
+    const at = vp ? vp.index + vp[0].length : head ? head.index + head[0].length : 0;
+    html = html.slice(0, at) + script + html.slice(at);
+  }
+
+  // Privacyverklaring: het pdf staat al op de hosting (assets/privacyverklaring.pdf).
+  // Link altijd naar dat vaste pad en haal de tijdelijke "pdf nog op te laden"-tekst weg.
+  const privacyWarnings = [];
+  const linkRe = /(<a\b[^>]*\bhref=")([^"]*privacy[^"]*\.pdf|[^"]*privacyverklaring[^"]*)(")/gi;
+  if (!linkRe.test(html)) privacyWarnings.push('In deze bundle is geen link naar de privacyverklaring gevonden; kijk dit na in index.html.');
+  html = html.replace(linkRe, '$1' + PRIVACY_PATH + '$3');
+  const before = html;
+  html = html.replace(/\s*<span\b[^>]*>\[PLACEHOLDER[^\]]*pdf[^\]]*\]<\/span>/gi, '');
+  if (before === html && /\[PLACEHOLDER[^\]]*pdf/i.test(html)) privacyWarnings.push('De placeholder-tekst bij de privacylink kon niet automatisch worden verwijderd; kijk dit na in index.html.');
+  return { html, privacyWarnings };
+}
+
+// ── Minimale zip-schrijver (zonder compressie; afbeeldingen zijn al gecomprimeerd) ──
+const CRC_TABLE = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(bytes) { let c = 0xFFFFFFFF; for (let i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+function makeZip(files) { // files: [{path, bytes}]
+  const enc = new TextEncoder();
+  const now = new Date();
+  const dosTime = (now.getHours() << 11) | (now.getMinutes() << 5) | (now.getSeconds() >> 1);
+  const dosDate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
+  const locals = [], centrals = []; let offset = 0;
+  const u16 = (v) => [v & 0xFF, (v >>> 8) & 0xFF];
+  const u32 = (v) => [v & 0xFF, (v >>> 8) & 0xFF, (v >>> 16) & 0xFF, (v >>> 24) & 0xFF];
+  for (const f of files) {
+    const name = enc.encode(f.path);
+    const crc = crc32(f.bytes), size = f.bytes.length;
+    const local = new Uint8Array([...u32(0x04034b50), ...u16(20), ...u16(0x0800), ...u16(0), ...u16(dosTime), ...u16(dosDate), ...u32(crc), ...u32(size), ...u32(size), ...u16(name.length), ...u16(0), ...name]);
+    locals.push(local, f.bytes);
+    centrals.push(new Uint8Array([...u32(0x02014b50), ...u16(20), ...u16(20), ...u16(0x0800), ...u16(0), ...u16(dosTime), ...u16(dosDate), ...u32(crc), ...u32(size), ...u32(size), ...u16(name.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(0), ...u32(offset), ...name]));
+    offset += local.length + size;
+  }
+  const cdSize = centrals.reduce((n, c) => n + c.length, 0);
+  const eocd = new Uint8Array([...u32(0x06054b50), ...u16(0), ...u16(0), ...u16(files.length), ...u16(files.length), ...u32(cdSize), ...u32(offset), ...u16(0)]);
+  const parts = [...locals, ...centrals, eocd];
+  const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0)); let o = 0;
+  for (const p of parts) { out.set(p, o); o += p.length; }
+  return out;
+}
+
+if (typeof module !== 'undefined') module.exports = { unpackBundle, buildHtml, makeZip, nameFromAlt };
+</script>
+
+<script>
+// ── Pagina-logica ──
+(() => {
+  const $ = (id) => document.getElementById(id);
+  let htmlFile = null, result = null;
+
+  function wireDrop(dropId, inputId, chosenId, onFile) {
+    const drop = $(dropId), input = $(inputId), chosen = $(chosenId);
+    const take = (file) => { if (!file) return; chosen.textContent = '✓ ' + file.name + ' (' + fmtSize(file.size) + ')'; onFile(file); };
+    input.addEventListener('change', () => take(input.files[0]));
+    ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('over'); }));
+    ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
+    drop.addEventListener('drop', (e) => take(e.dataTransfer.files[0]));
+  }
+  function fmtSize(n) { return n < 1024 ? n + ' B' : n < 1048576 ? (n / 1024).toFixed(0) + ' kB' : (n / 1048576).toFixed(1) + ' MB'; }
+  function msg(kind, text) { const d = document.createElement('div'); d.className = 'msg ' + kind; d.textContent = text; $('messages').appendChild(d); }
+
+  wireDrop('dropHtml', 'fileHtml', 'chosenHtml', (f) => { htmlFile = f; analyse(); });
+
+  let runId = 0; // kiest de gebruiker snel na elkaar twee bestanden, dan telt alleen de laatste analyse
+  async function analyse() {
+    const my = ++runId;
+    $('messages').innerHTML = ''; $('rows').innerHTML = ''; $('tableWrap').classList.add('hidden'); $('btnDownload').disabled = true; result = null;
+    try {
+      const html = await htmlFile.text();
+      if (my !== runId) return;
+      const r = await unpackBundle(html);
+      if (my !== runId) return;
+      result = r;
+      for (const w of result.warnings) msg('warn', w);
+      const { privacyWarnings } = buildHtml(result);
+      for (const w of privacyWarnings) msg('warn', w);
+      renderTable();
+      msg('ok', result.files.length + ' bestanden gevonden. De privacylink verwijst naar ' + PRIVACY_PATH + '. Controleer de namen en klik op "Download zip".');
+      $('btnDownload').disabled = false;
+    } catch (err) {
+      msg('err', err.message || String(err));
+    }
+  }
+
+  function renderTable() {
+    const rows = $('rows');
+    const order = { afbeelding: 0, lettertype: 1, script: 2, stijl: 3, document: 4, overig: 5 };
+    const sorted = [...result.files].sort((a, b) => (order[a.kind] - order[b.kind]) || a.path.localeCompare(b.path));
+    for (const f of sorted) {
+      const tr = document.createElement('tr');
+      const folder = f.path.slice(0, f.path.lastIndexOf('/') + 1), name = f.path.slice(folder.length);
+      const tdThumb = document.createElement('td');
+      if (f.kind === 'afbeelding') { const img = document.createElement('img'); img.className = 'thumb'; img.src = URL.createObjectURL(new Blob([f.bytes], { type: f.mime })); tdThumb.appendChild(img); }
+      else { tdThumb.textContent = { lettertype: 'Aa', script: '{ }', stijl: '#', document: 'PDF', overig: '…' }[f.kind]; tdThumb.style.color = 'var(--muted)'; tdThumb.style.textAlign = 'center'; }
+      const tdFolder = document.createElement('td'); tdFolder.className = 'folder'; tdFolder.textContent = folder;
+      const tdName = document.createElement('td');
+      const input = document.createElement('input'); input.value = name; input.disabled = f.path === PRIVACY_PATH;
+      input.addEventListener('input', () => { f.path = folder + input.value.trim().replace(/[\\/]+/g, '-'); });
+      tdName.appendChild(input);
+      const tdSize = document.createElement('td'); tdSize.className = 'size'; tdSize.textContent = fmtSize(f.bytes.length);
+      tr.append(tdThumb, tdFolder, tdName, tdSize); rows.appendChild(tr);
+    }
+    $('tableWrap').classList.remove('hidden');
+  }
+
+  $('btnDownload').addEventListener('click', () => {
+    if (!result) return;
+    const paths = new Set();
+    for (const f of result.files) {
+      const name = f.path.slice(f.path.lastIndexOf('/') + 1);
+      if (!name || name.startsWith('.')) { alert('Een bestandsnaam is leeg of ongeldig.'); return; }
+      if (paths.has(f.path)) { alert('Twee bestanden heten "' + f.path + '". Geef er één een andere naam.'); return; }
+      paths.add(f.path);
+    }
+    const { html } = buildHtml(result);
+    const zipFiles = [{ path: 'index.html', bytes: new TextEncoder().encode(html) }, ...result.files.map(f => ({ path: f.path, bytes: f.bytes }))];
+    const zip = makeZip(zipFiles);
+    const title = (/<title>([^<]*)<\/title>/i.exec(html) || [])[1] || 'website';
+    const zipName = (title.split(/[—–|:-]/)[0].trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'website') + '-site.zip';
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([zip], { type: 'application/zip' })); a.download = zipName;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+  });
+})();
+</script>
+</body>
+</html>
