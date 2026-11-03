@@ -371,7 +371,7 @@ textarea.input { min-height: 90px; resize: vertical; }
 
 <div lang="nl-BE" style="min-height: 100vh; background: var(--color-bg)">
 
-  <!-- ══ NAVIGATIE ══ sticky, woordmerk links, ankerlinks rechts -->
+  
   <header style="position: sticky; top: 0; z-index: 20; background: var(--color-bg); border-bottom: 1px solid var(--color-divider)">
     <div style="max-width: 1180px; margin: 0 auto; padding: 18px clamp(20px, 5vw, 64px); display: flex; align-items: baseline; gap: 32px; flex-wrap: wrap">
       <a href="#top" style="font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-size: 19px; letter-spacing: 0.34em; color: var(--color-accent-700); margin-right: auto">ARGILLA</a>
@@ -381,23 +381,14 @@ textarea.input { min-height: 90px; resize: vertical; }
         <a href="#anders" style="color: var(--color-text); padding: 2px 0" style-hover="color: var(--color-accent-700)">Wat ons anders maakt</a>
         <a href="#team" style="color: var(--color-text); padding: 2px 0" style-hover="color: var(--color-accent-700)">Team</a>
         <a href="#wat-wij-zoeken" style="color: var(--color-text); padding: 2px 0" style-hover="color: var(--color-accent-700)">Investeringsprofiel</a>
-        <a href="#inzichten" hidden="" style="display: none; color: var(--color-text); padding: 2px 0" style-hover="color: var(--color-accent-700)">Inzichten</a>
         <a href="#contact" style="color: var(--color-text); padding: 2px 0" style-hover="color: var(--color-accent-700)">Contact</a>
-        <!-- TAALKEUZE: NL is de huidige versie. Zet de href's later op /en/ en /fr/
-             (of index-en.html / index-fr.html) zodra die pagina's er zijn. -->
-        <span hidden="" style="display: none; align-items: baseline; gap: 10px; padding-left: 18px; margin-left: 4px; border-left: 1px solid var(--color-divider); font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase">
-          <span aria-current="true" style="color: var(--color-accent-700); font-weight: 600">NL</span>
-          <a href="#top" sc-camel-href-lang="en" style="color: color-mix(in srgb, var(--color-text) 62%, transparent)" style-hover="color: var(--color-accent-700)">EN</a>
-          <a href="#top" sc-camel-href-lang="fr" style="color: color-mix(in srgb, var(--color-text) 62%, transparent)" style-hover="color: var(--color-accent-700)">FR</a>
-        </span>
-        <!-- PORTFOLIO: voeg hier later <a href="#portfolio">Portfolio</a> toe zodra de sectie aan staat -->
       </nav>
     </div>
   </header>
 
   <main id="top">
 
-    <!-- ══ 1. HERO ══ woordmerk, stille regel, kop, kleine regel, één CTA -->
+    
     <section style="position: relative; overflow: hidden; border-bottom: 1px solid var(--color-divider)">
       <sc-if value="{{ grain }}" hint-placeholder-val="{{ true }}">
         <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; opacity: 0.055; background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' sc-camel-base-frequency='0.85' sc-camel-num-octaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
@@ -414,7 +405,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       </div>
     </section>
 
-    <!-- ══ 2. WIE WIJ ZIJN ══ -->
+    
     <section id="wie-wij-zijn" data-reveal="" style="scroll-margin-top: 90px; border-bottom: 1px solid var(--color-divider)">
       <div style="max-width: 1180px; margin: 0 auto; padding: clamp(64px, 11vh, 128px) clamp(20px, 5vw, 64px); display: grid; grid-template-columns: minmax(0, 22ch) minmax(0, 1fr); gap: 28px clamp(32px, 7vw, 96px)">
         <h2 style="margin: 0; font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-weight: 400; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.3">Wie wij zijn</h2>
@@ -422,7 +413,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       </div>
     </section>
 
-    <!-- ══ 3. DE NAAM ══ kleine, rustige sectie · enige plaats waar de betekenis van de naam staat -->
+    
     <section data-reveal="" style="position: relative; overflow: hidden; border-bottom: 1px solid var(--color-divider)">
       <sc-if value="{{ grain }}" hint-placeholder-val="{{ true }}">
         <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; opacity: 0.05; background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' sc-camel-base-frequency='0.85' sc-camel-num-octaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n2)'/%3E%3C/svg%3E&quot;)"></div>
@@ -434,7 +425,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       </div>
     </section>
 
-    <!-- ══ 4. ONS DNA ══ openingsregel + vier principes, zonder iconen -->
+    
     <section id="dna" data-reveal="" style="scroll-margin-top: 90px; border-bottom: 1px solid var(--color-divider)">
       <div style="max-width: 1180px; margin: 0 auto; padding: clamp(64px, 11vh, 128px) clamp(20px, 5vw, 64px); display: grid; grid-template-columns: minmax(0, 22ch) minmax(0, 1fr); gap: 28px clamp(32px, 7vw, 96px)">
         <h2 style="margin: 0; font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-weight: 400; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.3">Ons DNA</h2>
@@ -450,7 +441,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       </div>
     </section>
 
-    <!-- ══ 5. WAT ONS ANDERS MAAKT ══ zwaartepunt: volle breedte, grotere typografie, meer ruimte -->
+    
     <section id="anders" data-reveal="" style="scroll-margin-top: 90px; border-bottom: 1px solid var(--color-divider)">
       
     <div style="max-width: 1400px; margin: 0 auto; padding: clamp(88px, 17vh, 190px) clamp(20px, 5vw, 64px)">
@@ -473,13 +464,13 @@ textarea.input { min-height: 90px; resize: vertical; }
           </div>
         </div>
         <p style="margin: clamp(56px, 9vh, 108px) 0 0; font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-size: clamp(21px, 2.6vw, 32px); line-height: 1.55; max-width: 38ch">Kapitaal vindt u bij velen. Wij brengen daarnaast de tijd, de ervaring en de betrokkenheid om samen te groeien.</p>
-        <!-- BEELD: productiebeeld van de groep -->
+        
         <figure style="margin: clamp(56px, 9vh, 104px) 0 0">
           <img src="assets/images/productie-steenfabrieken.png" alt="Productie bij de steenfabrieken van de groep" style="display: block; width: min(100%, 1200px); aspect-ratio: 16 / 8; object-fit: cover; border: 1px solid var(--color-divider)">
         </figure>
       </div></section>
 
-    <!-- ══ 6. TEAM ══ twee partners gelijkwaardig; bio's zijn placeholders -->
+    
     <section id="team" data-reveal="" style="scroll-margin-top: 90px; border-bottom: 1px solid var(--color-divider)">
       
     <div style="max-width: 1180px; margin: 0 auto; padding: clamp(64px, 11vh, 128px) clamp(20px, 5vw, 64px)">
@@ -508,8 +499,7 @@ textarea.input { min-height: 90px; resize: vertical; }
         </div>
       </div></section>
 
-    <!-- ══ 6b. GOVERNANCE ══ Investeringscomité (3).
-         Namen en rollen zijn placeholders; vul ze aan of verwijder rijen. -->
+    
     <section id="governance" data-reveal="" style="scroll-margin-top: 90px; border-bottom: 1px solid var(--color-divider)">
       <div style="max-width: 1180px; margin: 0 auto; padding: clamp(64px, 11vh, 128px) clamp(20px, 5vw, 64px); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(44px, 6vw, 96px)">
 
@@ -546,25 +536,14 @@ textarea.input { min-height: 90px; resize: vertical; }
       </div>
     </section>
 
-    <!-- ══ 7. WAT WIJ ZOEKEN ══ -->
+    
     <section id="wat-wij-zoeken" data-reveal="" style="scroll-margin-top: 90px; border-bottom: 1px solid var(--color-divider)">
       <div style="max-width: 1180px; margin: 0 auto; padding: clamp(64px, 11vh, 128px) clamp(20px, 5vw, 64px); display: grid; grid-template-columns: minmax(0, 22ch) minmax(0, 1fr); gap: 28px clamp(32px, 7vw, 96px)">
         <h2 style="margin: 0; font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-weight: 400; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.3">Investeringsprofiel</h2>
         <div>
           <p style="margin: 0; font-size: 17px; line-height: 1.85; max-width: 62ch">Gezonde, winstgevende familiale en ondernemersgeleide bedrijven met een bewezen businessmodel en ruimte om te groeien. Vaak zijn het bedrijven waar de eigenaar nadenkt over opvolging of over een volgende stap. Of uw bedrijf past, weten wij pas na een gesprek.</p>
           
-          <!-- BEELD: sfeerbeeld van een gesprek. Spec:
-               · 2, maximaal 3 personen aan een tafel of balie, in gesprek — niet frontaal
-                 geposeerd, niet lachend naar de camera; halftotaal of over-de-schouder
-               · minstens één persoon 50-plus; gezichten mogen deels afgesneden of van zij
-               · niet-herleidbare werkomgeving: kantoorhoek, werkplaats zonder machines,
-                 tafel met papier
-               · warme gedempte tonen (zand, taupe, warm grijs, gebroken wit), zacht zijlicht
-               · NIET: fluohesjes, helmen, werkkledij, machines, bouwmateriaal, logo's,
-                 wolkenkrabbers, handdrukken, prominente laptops of schermen
-               · liggend, min. 2400px breed (2x voor retina); crop ook op mobiel checken
-               Vervangen door: <img src="assets/gesprek.jpg" alt="…" style="display: block;
-               width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border: 1px solid var(--color-divider)" /> -->
+          
           <p style="margin: 28px 0 0; padding-top: 28px; border-top: 1px solid var(--color-divider); font-size: 17px; line-height: 1.85; max-width: 62ch; color: color-mix(in srgb, var(--color-text) 78%, transparent)"><strong style="font-weight: 700; color: var(--color-text)">Omvang.</strong> Kleine en middelgrote ondernemingen met een bedrijfswinst vanaf ongeveer 1 miljoen euro.</p>
           <p style="margin: 20px 0 0; font-size: 17px; line-height: 1.85; max-width: 62ch; color: color-mix(in srgb, var(--color-text) 78%, transparent)"><strong style="font-weight: 700; color: var(--color-text)">Regio.</strong> België en de buurlanden. Dicht genoeg om er regelmatig te zijn.</p>
           <p style="margin: 20px 0 0; font-size: 17px; line-height: 1.85; max-width: 62ch; color: color-mix(in srgb, var(--color-text) 78%, transparent)"><strong style="font-weight: 700; color: var(--color-text)">Type.</strong> Een bewezen model met positieve cashflow. Geen start-ups, geen herstructureringen.</p>
@@ -575,57 +554,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       </div>
     </section>
 
-    <!-- ══ 8. INZICHTEN ══ structuur voorzien; alle inhoud is placeholder -->
-    <section id="inzichten" hidden="" data-reveal="" style="display: none; scroll-margin-top: 90px; border-bottom: 1px solid var(--color-divider)">
-      <div style="max-width: 1180px; margin: 0 auto; padding: clamp(64px, 11vh, 128px) clamp(20px, 5vw, 64px); display: grid; grid-template-columns: minmax(0, 22ch) minmax(0, 1fr); gap: 28px clamp(32px, 7vw, 96px)">
-        <h2 style="margin: 0; font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-weight: 400; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.3">Inzichten</h2>
-        <ul style="list-style: none; margin: 0; padding: 0; max-width: 62ch">
-          <li style="border-top: 1px solid var(--color-divider); padding: 28px 0">
-            <p style="margin: 0; font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 62%, transparent)">[PLACEHOLDER — datum]</p>
-            <h3 style="margin: 12px 0 0; font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-weight: 400; font-size: 21px; line-height: 1.4">[PLACEHOLDER — titel artikel 1]</h3>
-            <p style="margin: 12px 0 0; font-size: 16px; line-height: 1.8">[PLACEHOLDER — samenvatting van twee regels.]</p>
-            <p style="margin: 14px 0 0; font-size: 14.5px"><a href="#inzichten">Lees verder</a></p>
-          </li>
-          <li style="border-top: 1px solid var(--color-divider); padding: 28px 0">
-            <p style="margin: 0; font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 62%, transparent)">[PLACEHOLDER — datum]</p>
-            <h3 style="margin: 12px 0 0; font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-weight: 400; font-size: 21px; line-height: 1.4">[PLACEHOLDER — titel artikel 2]</h3>
-            <p style="margin: 12px 0 0; font-size: 16px; line-height: 1.8">[PLACEHOLDER — samenvatting van twee regels.]</p>
-            <p style="margin: 14px 0 0; font-size: 14.5px"><a href="#inzichten">Lees verder</a></p>
-          </li>
-          <li style="border-top: 1px solid var(--color-divider); border-bottom: 1px solid var(--color-divider); padding: 28px 0">
-            <p style="margin: 0; font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 62%, transparent)">[PLACEHOLDER — datum]</p>
-            <h3 style="margin: 12px 0 0; font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-weight: 400; font-size: 21px; line-height: 1.4">[PLACEHOLDER — titel artikel 3]</h3>
-            <p style="margin: 12px 0 0; font-size: 16px; line-height: 1.8">[PLACEHOLDER — samenvatting van twee regels.]</p>
-            <p style="margin: 14px 0 0; font-size: 14.5px"><a href="#inzichten">Lees verder</a></p>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ══ 9. PORTFOLIO ══ GEBOUWD MAAR UITGESCHAKELD.
-         Aanzetten: zet de prop `portfolioActief` op true (Tweaks-paneel), of vervang in de
-         logica `this.props.portfolioActief ?? false` door `true`. Voeg daarna in de navigatie
-         hierboven de regel <a href="#portfolio">Portfolio</a> toe. Kaarten dupliceer je
-         binnen het grid hieronder. -->
-    <sc-if value="{{ portfolioActief }}" hint-placeholder-val="{{ false }}">
-      <section id="portfolio" data-reveal="" style="scroll-margin-top: 90px; border-bottom: 1px solid var(--color-divider)">
-        <div style="max-width: 1180px; margin: 0 auto; padding: clamp(64px, 11vh, 128px) clamp(20px, 5vw, 64px); display: grid; grid-template-columns: minmax(0, 22ch) minmax(0, 1fr); gap: 28px clamp(32px, 7vw, 96px)">
-          <h2 style="margin: 0; font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-weight: 400; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.3">Portfolio</h2>
-          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: clamp(28px, 4vw, 56px)">
-            <article>
-              <div role="img" aria-label="Placeholder voor logo" style="aspect-ratio: 3 / 2; background: color-mix(in srgb, var(--color-text) 11%, var(--color-bg)); border: 1px solid var(--color-divider); display: grid; place-content: center; text-align: center; padding: 16px">
-                <span style="font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 62%, transparent)">Placeholder — logo</span>
-              </div>
-              <p style="margin: 18px 0 0; font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700)">[PLACEHOLDER — sector] · [PLACEHOLDER — jaar van instap]</p>
-              <h3 style="margin: 10px 0 0; font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-weight: 400; font-size: 20px; line-height: 1.4">[PLACEHOLDER — naam onderneming]</h3>
-              <p style="margin: 10px 0 0; font-size: 15.5px; line-height: 1.8; max-width: 40ch">[PLACEHOLDER — beschrijving van twee regels.]</p>
-            </article>
-          </div>
-        </div>
-      </section>
-    </sc-if>
-
-    <!-- ══ 10. CONTACT ══ rechtstreekse gegevens bovenaan en prominent; formulier daaronder -->
+    
     <section id="contact" data-reveal="" style="scroll-margin-top: 90px">
       <div style="max-width: 1180px; margin: 0 auto; padding: clamp(72px, 13vh, 148px) clamp(20px, 5vw, 64px)">
         <h2 style="margin: 0; font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-weight: 400; font-size: clamp(28px, 3.6vw, 42px); line-height: 1.24">Laten we praten.</h2>
@@ -645,12 +574,12 @@ textarea.input { min-height: 90px; resize: vertical; }
             <p style="margin: 12px 0 0; font-size: 16px; line-height: 1.9"><a href="mailto:info@argillagroup.be">info@argillagroup.be</a></p>
             <p style="margin: 14px 0 0; font-size: 16px; line-height: 1.7; color: color-mix(in srgb, var(--color-text) 78%, transparent)"><span style="font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700)">Kantoor</span><br>Bosstraat 52, 3560 Lummen</p>
             <p style="margin: 14px 0 0; font-size: 16px; line-height: 1.7; color: color-mix(in srgb, var(--color-text) 78%, transparent)"><span style="font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); white-space: nowrap">Maatschappelijke zetel</span><br>Riemsterweg 300, 3740 Bilzen-Hoeselt</p>
-            <!-- LINKEDIN: bedrijfspagina van Argilla -->
+            
             <p style="margin: 14px 0 0"><a href="https://www.linkedin.com/company/argillagroup-be/" target="_blank" rel="noopener" aria-label="Argilla op LinkedIn" style="display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700)" style-hover="color: var(--color-accent-900)"><svg sc-camel-view-box="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.55V9h3.57v11.45z"></path></svg>LinkedIn</a></p>
           </div>
         </div>
 
-        <!-- FORMULIER: verstuurt via FormSubmit (formsubmit.co) naar info@argillagroup.be. Eerste inzending = activatiemail naar dat adres; bevestigen. -->
+        
         <sc-if value="{{ formulier }}" hint-placeholder-val="{{ true }}">
           <form sc-camel-on-submit="{{ onSubmit }}" style="margin-top: clamp(56px, 9vh, 104px); padding-top: clamp(36px, 5vh, 52px); border-top: 1px solid var(--color-divider); max-width: 720px">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px">
@@ -691,13 +620,13 @@ textarea.input { min-height: 90px; resize: vertical; }
     </section>
   </main>
 
-  <!-- ══ FOOTER ══ juridische gegevens; enige plaats waar "Argilla Group" voorkomt -->
+  
   <footer style="border-top: 1px solid var(--color-divider)">
     <div style="max-width: 1180px; margin: 0 auto; padding: clamp(48px, 8vh, 84px) clamp(20px, 5vw, 64px)">
       <p style="margin: 0; font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif; font-size: 17px; letter-spacing: 0.3em; color: var(--color-accent-700)">ARGILLA</p>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 24px clamp(32px, 4vw, 64px); margin-top: 32px; font-size: 14px; line-height: 1.85; color: color-mix(in srgb, var(--color-text) 72%, transparent)">
         <p style="margin: 0">Argilla Group BV<br><span style="white-space: nowrap">Maatschappelijke zetel: Riemsterweg 300, 3740 Bilzen-Hoeselt</span><br>Kantoor: Bosstraat 52, 3560 Lummen</p>
-        <!-- PRIVACYVERKLARING: assets/privacyverklaring.pdf (ook zo in de GitHub-repository zetten). -->
+        
         <div style="display: flex; flex-direction: column; gap: 12px">
           <p style="margin: 0"><a href="assets/privacyverklaring.pdf" target="_blank" rel="noopener">Privacyverklaring (pdf)</a></p>
           <p style="margin: 0; max-width: 46ch">Deze website vormt geen aanbod en geen beleggingsadvies.</p>
